@@ -19,3 +19,13 @@ while 1 do
   gpio.write(3, gpio.LOW)
   tmr.delay(1000000)   -- wait 1,000,000 us = 1 second
 end
+
+--t = require("ds18b20")
+ok, t = pcall(require, "ds18b20")
+if not ok then
+  -- handle error, t has error message
+else
+  -- can use t
+  t.setup(1)
+  temperatura = t.read()
+end

@@ -34,7 +34,6 @@ function sendPage(conn)
 
   for ap,v in pairs(currentAPs) do
     conn:send('<tr><td><input type="button" onClick=\'document.getElementById("ssid").value = "' .. ap .. '"\' value="' .. ap .. '"/></td></tr>\n')
-    collectgarbage()
   end
   
   conn:send('</table>\n\nSSID: <input type="text" id="ssid" name="ssid" value=""><br/>\nPassword: <input type="text" name="passwd" value=""><br/>\n\n')
@@ -86,10 +85,23 @@ end
     print("GET favicon request")
   elseif (string.find(payload, "GET / HTTP/1.1") ~= nil) then
     print("GET received")
-    sendPage(conn)
+    ok, err = pcall(sendPage, conn)
+    if ok then
+        print("function sendPage is OK")
+    else
+        collectgarbage()
+        print("Memory Used:"..collectgarbage("count"))
+        print("Heap Available:"..node.heap())
+        print("function sendPage is err: "..err)
+    end
   elseif (string.find(payload, "GET /files HTTP/1.1") ~= nil) then
     print("GET files")
-    sendFilesList(conn)
+    ok, err = pcall(sendFilesList, conn)
+    if ok then
+        print("function sendFilesList is OK")
+    else
+        print("function sendFilesList is err: "..err)
+    end
   else
     print("POST received")
     print("payload:"..payload)

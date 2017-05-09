@@ -13,6 +13,7 @@ dofile("httpsrv_fn.lua")
 
 -- Start a simple http server
 srv=net.createServer(net.TCP)
+--srv=net.createServer(net.TCP, 1)
 srv:listen(80,function(conn)
   conn:on("receive", incoming_connection)
   -- https://nodemcu.readthedocs.io/en/master/en/modules/net/#netsocketon
